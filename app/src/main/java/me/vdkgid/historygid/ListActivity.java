@@ -1,6 +1,7 @@
 package me.vdkgid.historygid;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -12,6 +13,7 @@ import android.widget.SimpleAdapter;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Objects;
 
 public class ListActivity extends AppCompatActivity {
 
@@ -26,40 +28,22 @@ public class ListActivity extends AppCompatActivity {
 
         ListView listView = (ListView)findViewById(R.id.ListView);
 
-        ArrayList<HashMap<String, Object>> mCatList = new ArrayList<HashMap<String, Object>>();
-        HashMap<String, Object> hm;
+        ArrayList<String> Names = new ArrayList<String>();
+        ArrayList<String> Icons = new ArrayList<String>();
 
-        for(int i = 0; i < 10; i++) {
-            hm = new HashMap<>();
-            hm.put("Name", "test"+i); // Название
-            hm.put("Icon", R.mipmap.ic_launcher); // Картинка
-            mCatList.add(hm);
-        }
-        hm = new HashMap<>();
-        hm.put("Name", "1");
-        hm.put("Icon", R.drawable.colosian);
-        mCatList.add(hm);
-
-        hm = new HashMap<>();
-        hm.put("Name", "2");
-        hm.put("Icon", R.drawable.colosian);
-        mCatList.add(hm);
-
-        hm = new HashMap<>();
-        hm.put("Name", "3");
-        hm.put("Icon", R.drawable.colosian);
-        mCatList.add(hm);
-
-        SimpleAdapter adapter = new SimpleAdapter(this, mCatList,
-                R.layout.list_item, new String[]{"Name", "Icon"},
-                new int[]{R.id.text1, R.id.img});
+        CustomListAdapter adapter = new CustomListAdapter(this, Names,
+                 Icons);
 
         listView.setAdapter(adapter);
+
+        CountParser countParser = new CountParser(adapter, 2, Names, Icons);
+        countParser.execute();
 
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent intent = new Intent(ListActivity.this, ActivityDescription.class);
+                intent.putExtra("Id", position+1);
                 startActivity(intent);
             }
         });
@@ -71,9 +55,5 @@ public class ListActivity extends AppCompatActivity {
     {
         onBackPressed();
         return true;
-    }
-
-    public void onMapButtonClick(View view) {
-        finish();
     }
 }

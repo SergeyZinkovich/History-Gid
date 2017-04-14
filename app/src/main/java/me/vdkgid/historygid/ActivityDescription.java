@@ -18,11 +18,13 @@ public class ActivityDescription extends AppCompatActivity {
         actionBar.setDisplayHomeAsUpEnabled(true);
         actionBar.setHomeButtonEnabled(true);
 
-        ImageView imageView = (ImageView) findViewById(R.id.description_ImageView);
-        imageView.setImageResource(R.drawable.colosian);
+        int id = getIntent().getExtras().getInt("Id");
 
-        TextView textView = (TextView) findViewById(R.id.description_TextView);
-        textView.setText(R.string.large_text);
+        TextView nameTextView = (TextView) findViewById(R.id.description_nameTextView);
+        ImageView imageView = (ImageView) findViewById(R.id.description_ImageView);
+        TextView descriptionTextView = (TextView) findViewById(R.id.description_descriptionTextView);
+        InfoParser infoParser = new InfoParser(this, id, 3, imageView, nameTextView, descriptionTextView);
+        infoParser.execute();
     }
 
     @Override
